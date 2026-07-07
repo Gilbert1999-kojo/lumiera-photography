@@ -1,0 +1,31 @@
+/* ============================================================
+   Portfolio + Booking — Orange (#FF6600) & Black (#0A0A0A)
+   Tailwind v4 + JS config via @config directive
+   ============================================================ */
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* ── Class-based dark mode for Tailwind v4 ─────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Smooth theme transitions ──────────────────────────────── */
+*,
+*::before,
+*::after {
+  transition: background-color 0.25s ease, border-color 0.2s ease;
+}
+
+/* ── Brand orange scrollbar ────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #FF6600; border-radius: 3px; }
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', system-ui, -apple-system, sans-serif; margin: 0; }
+
+/* ── Calendar day accessible focus ring ────────────────────── */
+.cal-day:focus-visible {
+  outline: 2px solid #FF6600;
+  outline-offset: 2px;
+}
+
