@@ -25,7 +25,7 @@ export default function Portfolio() {
             Portfolio
           </h2>
           <p className="text-neutral-500 dark:text-brand-dark-subtle max-w-xl mx-auto">
-            Branding, digital, and creative projects crafted to leave a lasting impression.
+            Weddings, portraits, events, and commercial work — each frame a story worth keeping.
           </p>
         </div>
 

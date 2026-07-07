@@ -16,21 +16,21 @@ export default function Hero() {
                         bg-brand-orange-pale dark:bg-brand-orange/10
                         text-brand-orange text-sm font-medium">
           <Sparkles size={14} />
-          Available for new projects — 2026
+          Booking open — 2026
         </div>
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight
                        text-black dark:text-white leading-none mb-6">
-          Creative work<br />
-          <span className="text-brand-orange">that converts.</span>
+          Moments made<br />
+          <span className="text-brand-orange">to last forever.</span>
         </h1>
 
         {/* Sub-headline */}
         <p className="max-w-2xl mx-auto text-lg sm:text-xl
                       text-neutral-600 dark:text-neutral-400 leading-relaxed mb-10">
-          Brand identity, web design, and social media strategy — crafted to
-          make your business impossible to ignore.
+          Lumiera Studios captures portraits, weddings, events, and commercial
+          work with a bold, cinematic eye. Based everywhere, booking worldwide.
         </p>
 
         {/* CTA buttons */}

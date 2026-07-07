@@ -1,39 +1,39 @@
 export const services = [
   {
-    id: 'brand',
-    name: 'Brand Identity',
-    duration: 60,
-    price: '$350',
-    description: 'Logo, colour palette, and brand guidelines consultation.',
-    icon: '🎨',
+    id: 'wedding',
+    name: 'Wedding Photography',
+    duration: 480,
+    price: '$2,800',
+    description: 'Full-day coverage — ceremony, reception, and portraits. Delivered in 4–6 weeks.',
+    icon: '💍',
   },
   {
-    id: 'web',
-    name: 'Web Design',
+    id: 'portrait',
+    name: 'Portrait Session',
     duration: 90,
-    price: '$500',
-    description: 'UX/UI wireframes, prototype review, and feedback session.',
-    icon: '💻',
-  },
-  {
-    id: 'social',
-    name: 'Social Media Strategy',
-    duration: 60,
-    price: '$250',
-    description: 'Content calendar, template set, and platform strategy.',
-    icon: '📱',
-  },
-  {
-    id: 'photo',
-    name: 'Photography Session',
-    duration: 120,
     price: '$450',
-    description: 'On-location or studio shoot with edited deliverables.',
+    description: 'Individual, couple, or family portraits — studio or on-location golden-hour shoot.',
+    icon: '🎞️',
+  },
+  {
+    id: 'event',
+    name: 'Event Coverage',
+    duration: 240,
+    price: '$1,200',
+    description: 'Corporate events, galas, concerts, and launches — full storytelling coverage.',
+    icon: '🎤',
+  },
+  {
+    id: 'commercial',
+    name: 'Commercial / Brand Shoot',
+    duration: 180,
+    price: '$1,800',
+    description: 'Product, lifestyle, and editorial photography for campaigns, websites, and print.',
     icon: '📷',
   },
 ];
 
-// Time slots available each day (24-hour format, display as 12-hour)
+// Available booking time slots (24-hour format)
 export const timeSlots = [
-  '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00',
+  '08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00',
 ];

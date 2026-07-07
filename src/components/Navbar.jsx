@@ -28,10 +28,10 @@ export default function Navbar({ dark, onToggleTheme }) {
                        shadow-md shadow-brand-orange/30
                        group-hover:shadow-brand-orange/50 transition-shadow"
           >
-            S
+            L
           </span>
           <span className="font-extrabold text-lg tracking-tight text-neutral-900 dark:text-white">
-            Studio<span className="text-brand-orange">.</span>
+            Lumiera<span className="text-brand-orange">.</span>
           </span>
         </a>
 

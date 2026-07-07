@@ -70,10 +70,10 @@ export default function Booking() {
             Book a Session
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-black dark:text-white mb-4">
-            Let's Work Together
+            Let’s Make Something Beautiful
           </h2>
           <p className="text-neutral-500 dark:text-neutral-400">
-            Pick a service, choose your time, and you're on the calendar.
+            Choose your session type, pick a date, and let’s start creating.
           </p>
         </div>
 

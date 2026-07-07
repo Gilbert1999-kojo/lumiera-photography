@@ -18,13 +18,13 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 font-bold text-xl mb-4">
               <span className="w-8 h-8 rounded-lg bg-brand-orange flex items-center justify-center text-white text-sm font-black">
-                S
+                L
               </span>
-              <span>Studio<span className="text-brand-orange">.</span></span>
+              <span>Lumiera<span className="text-brand-orange">.</span></span>
             </div>
             <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
-              Creative design & strategy studio helping brands grow through
-              compelling visual identities and digital experiences.
+              Lumiera Studios is a photography practice specialising in weddings,
+              portraits, events, and commercial work. Based globally, booking worldwide.
             </p>
           </div>
 
@@ -35,10 +35,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               {[
-                ['Portfolio', '#portfolio'],
-                ['Services', '#services'],
-                ['Book a Session', '#booking'],
-                ['Contact', 'mailto:hello@portfolio.com'],
+                ['Home',           '#'        ],
+                ['Portfolio',      '#portfolio'],
+                ['Book a Session', '#booking' ],
+                ['Contact',        'mailto:hello@lumierastudios.com'],
               ].map(([label, href]) => (
                 <li key={label}>
                   <a
@@ -58,10 +58,10 @@ export default function Footer() {
               Get in Touch
             </h4>
             <a
-              href="mailto:hello@portfolio.com"
+              href="mailto:hello@lumierastudios.com"
               className="text-sm text-brand-orange hover:text-brand-orange-light transition-colors block mb-2"
             >
-              hello@portfolio.com
+              hello@lumierastudios.com
             </a>
             <p className="text-sm text-neutral-400">Available Mon – Fri, 9 AM – 6 PM</p>
 
@@ -86,11 +86,10 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-neutral-800 pt-8 flex flex-col sm:flex-row
                         justify-between items-center gap-3 text-xs text-neutral-600">
-          <span>© {year} Portfolio Studio. All rights reserved.</span>
+          <span>© {year} Lumiera Studios. All rights reserved.</span>
           <span>
-            Built with{' '}
-            <span className="text-orange-500">React + Tailwind CSS</span>
-            {' '}· Orange &amp; Black
+            Photography by{' '}
+            <span className="text-brand-orange">Lumiera Studios</span>
           </span>
         </div>
       </div>
