@@ -3,9 +3,10 @@ import { Sun, Moon, Menu, X } from 'lucide-react';
 
 /* ── Nav links: Home · Portfolio · Booking ───────────────────── */
 const NAV_LINKS = [
-  { label: 'Home',      href: '#'         },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Booking',   href: '#booking'  },
+  { label: 'Home',      href: '#'          },
+  { label: 'Portfolio', href: '#portfolio'  },
+  { label: 'Packages',  href: '#packages'  },
+  { label: 'Booking',   href: '#booking'   },
 ];
 
 export default function Navbar({ dark, onToggleTheme }) {
