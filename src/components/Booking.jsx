@@ -3,7 +3,7 @@ import { services, timeSlots } from '../data/servicesData';
 import { formatTime, getGoogleCalendarUrl, generateIcsFile } from '../utils/calendarUtils';
 import BookingCalendar from './BookingCalendar';
 import {
-  CheckCircle2, Clock, DollarSign, Calendar, CalendarCheck,
+  CheckCircle2, Clock, Calendar, CalendarCheck,
   ChevronRight, ChevronLeft, ExternalLink, Download,
 } from 'lucide-react';
 
@@ -182,7 +182,7 @@ function StepService({ booking, setBooking }) {
             <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{svc.description}</div>
             <div className="flex items-center gap-3 mt-3">
               <span className="flex items-center gap-1 text-xs text-brand-orange font-semibold">
-                <DollarSign size={11} />{svc.price.replace('$', '')}
+                <span className="text-[11px]">₪</span>{svc.price.replace('₪', '')}
               </span>
               <span className="flex items-center gap-1 text-xs text-neutral-400">
                 <Clock size={11} />{svc.duration} min
@@ -340,7 +340,7 @@ function StepConfirm({ booking, service, onSubmit }) {
         />
         <SummaryRow icon={<Clock size={15} />} label="Time" value={booking.time ? formatTime(booking.time) : '—'} />
         <SummaryRow icon={<Clock size={15} />} label="Duration" value={service ? `${service.duration} min` : '—'} />
-        <SummaryRow icon={<DollarSign size={15} />} label="Price" value={service?.price} />
+        <SummaryRow icon={<span className="text-sm font-bold">₪</span>} label="Price" value={service?.price} />
         <div className="border-t border-neutral-100 dark:border-neutral-800 pt-3 mt-3" />
         <SummaryRow label="Name" value={booking.name} />
         <SummaryRow label="Email" value={booking.email} />
