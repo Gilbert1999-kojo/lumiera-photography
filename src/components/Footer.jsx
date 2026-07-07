@@ -7,7 +7,7 @@ export default function Footer() {
     { icon: <Globe size={18} />,  href: '#', label: 'Website' },
     { icon: <Share2 size={18} />, href: '#', label: 'Twitter / X' },
     { icon: <Link size={18} />,   href: '#', label: 'LinkedIn' },
-    { icon: <Mail size={18} />,   href: 'mailto:hello@portfolio.com', label: 'Email' },
+    { icon: <Mail size={18} />,   href: 'mailto:Lumierastudios@gmail.com', label: 'Email' },
   ];
 
   return (
@@ -38,7 +38,7 @@ export default function Footer() {
                 ['Home',           '#'        ],
                 ['Portfolio',      '#portfolio'],
                 ['Book a Session', '#booking' ],
-                ['Contact',        'mailto:hello@lumierastudios.com'],
+                ['Contact',        'mailto:Lumierastudios@gmail.com'],
               ].map(([label, href]) => (
                 <li key={label}>
                   <a
@@ -58,12 +58,11 @@ export default function Footer() {
               Get in Touch
             </h4>
             <a
-              href="mailto:hello@lumierastudios.com"
+              href="mailto:Lumierastudios@gmail.com"
               className="text-sm text-brand-orange hover:text-brand-orange-light transition-colors block mb-2"
             >
-              hello@lumierastudios.com
+              Lumierastudios@gmail.com
             </a>
-            <p className="text-sm text-neutral-400">Available Mon – Fri, 9 AM – 6 PM</p>
 
             {/* Social icons */}
             <div className="flex gap-3 mt-5">

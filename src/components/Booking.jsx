@@ -180,14 +180,7 @@ function StepService({ booking, setBooking }) {
             <div className="text-2xl mb-2">{svc.icon}</div>
             <div className="font-bold text-black dark:text-white text-sm">{svc.name}</div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{svc.description}</div>
-            <div className="flex items-center gap-3 mt-3">
-              <span className="flex items-center gap-1 text-xs text-brand-orange font-semibold">
-                <span className="text-[11px]">₪</span>{svc.price.replace('₪', '')}
-              </span>
-              <span className="flex items-center gap-1 text-xs text-neutral-400">
-                <Clock size={11} />{svc.duration} min
-              </span>
-            </div>
+
           </button>
         ))}
       </div>
@@ -339,8 +332,6 @@ function StepConfirm({ booking, service, onSubmit }) {
           }
         />
         <SummaryRow icon={<Clock size={15} />} label="Time" value={booking.time ? formatTime(booking.time) : '—'} />
-        <SummaryRow icon={<Clock size={15} />} label="Duration" value={service ? `${service.duration} min` : '—'} />
-        <SummaryRow icon={<span className="text-sm font-bold">₪</span>} label="Price" value={service?.price} />
         <div className="border-t border-neutral-100 dark:border-neutral-800 pt-3 mt-3" />
         <SummaryRow label="Name" value={booking.name} />
         <SummaryRow label="Email" value={booking.email} />
