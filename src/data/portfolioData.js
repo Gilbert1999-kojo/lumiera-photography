@@ -1,71 +1,49 @@
 export const portfolioItems = [
   {
     id: 1,
-    title: 'The Okafor Wedding',
+    title: 'Wedding Coverage',
     category: 'Wedding',
     tags: ['Ceremony', 'Reception', 'Candid'],
     description:
-      'A full-day wedding coverage at Château Belcourt — 14 hours of emotional, cinematic storytelling from sunrise prep to the last dance.',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80',
+      'Full-day wedding coverage — from sunrise preparations to the last dance. Emotional, cinematic storytelling that captures every fleeting moment of your most important day.',
+    image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80',
     year: '2026',
     featured: true,
   },
   {
     id: 2,
-    title: 'Solène — Editorial Portrait',
-    category: 'Portrait',
-    tags: ['Editorial', 'Studio', 'Fashion'],
+    title: 'Event Coverage',
+    category: 'Event',
+    tags: ['Corporate', 'Live', 'Documentary'],
     description:
-      'High-contrast editorial portrait series shot in a controlled studio environment, styled for a Paris-based fashion magazine.',
-    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80',
+      'Conferences, galas, product launches, and live performances — dynamic coverage that documents the energy, atmosphere, and key moments of your event.',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
     year: '2026',
     featured: true,
   },
   {
     id: 3,
-    title: 'Neon Pulse — Concert Series',
-    category: 'Event',
-    tags: ['Low-light', 'Live Music', 'Stage'],
+    title: 'Brand Shoot',
+    category: 'Brand',
+    tags: ['Commercial', 'Lifestyle', 'Branding'],
     description:
-      'Three-night live music coverage for a sold-out festival, capturing energy and raw emotion in challenging low-light conditions.',
-    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800&q=80',
-    year: '2025',
-    featured: false,
-  },
-  {
-    id: 4,
-    title: 'Ember & Oak — Brand Shoot',
-    category: 'Commercial',
-    tags: ['Product', 'Lifestyle', 'Branding'],
-    description:
-      'Full commercial shoot for a lifestyle brand launch — product flats, lifestyle scenes, and environmental portraits for web and print.',
-    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80',
+      'Visual identities that sell. Product flats, lifestyle scenes, and editorial portraits crafted to elevate your brand across web, social, and print.',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80',
     year: '2025',
     featured: true,
   },
   {
-    id: 5,
-    title: 'Urban Frames — Street Series',
-    category: 'Fine Art',
-    tags: ['Street', 'Documentary', 'B&W'],
-    description:
-      'A 30-image black-and-white documentary series exploring identity and space in three cities, exhibited at Gallery Nord.',
-    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80',
-    year: '2025',
-    featured: false,
-  },
-  {
-    id: 6,
-    title: 'The Mensah Family',
+    id: 4,
+    title: 'Portrait Session',
     category: 'Portrait',
-    tags: ['Family', 'Outdoor', 'Golden Hour'],
+    tags: ['Editorial', 'Studio', 'Outdoor'],
     description:
-      'Golden-hour family portrait session at a private estate — natural, candid moments woven with beautifully lit posed frames.',
-    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191011?w=800&q=80',
+      'Intimate, expressive portrait sessions — studio or location, individual or family. Lighting and composition tailored to reveal the authentic you.',
+    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80',
     year: '2025',
-    featured: false,
+    featured: true,
   },
 ];
 
-export const categories = ['All', ...new Set(portfolioItems.map((p) => p.category))];
+export const categories = ['All', 'Wedding', 'Event', 'Brand', 'Portrait'];
 

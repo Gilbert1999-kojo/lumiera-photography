@@ -48,7 +48,7 @@ export default function Portfolio() {
         </div>
 
         {/* ── Project grid ────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {filtered.map((item) => (
             <article
               key={item.id}
@@ -69,7 +69,7 @@ export default function Portfolio() {
               />
 
               {/* Image */}
-              <div className="relative overflow-hidden h-52">
+              <div className="relative overflow-hidden h-64">
                 <img
                   src={item.image}
                   alt={item.title}
