@@ -22,7 +22,7 @@ export default function Hero() {
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight
                        text-black dark:text-white leading-none mb-6">
-          Moments made<br />
+          moments made<br />
           <span className="text-brand-orange">to last forever.</span>
         </h1>
 
