@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { portfolioItems, categories } from '../data/portfolioData';
+import { loadUploadedItems } from './PortfolioAdmin';
 import PortfolioModal from './PortfolioModal';
 import { ArrowUpRight } from 'lucide-react';
 
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [selected, setSelected] = useState(null);
+  const [selected,       setSelected]       = useState(null);
+  const [uploads,        setUploads]        = useState(loadUploadedItems);
+
+  const allItems = [...uploads, ...portfolioItems];
 
   const filtered =
     activeCategory === 'All'
-      ? portfolioItems
-      : portfolioItems.filter((p) => p.category === activeCategory);
+      ? allItems
+      : allItems.filter((p) => p.category === activeCategory);
 
   return (
     <section id="portfolio" className="py-20 bg-neutral-50 dark:bg-brand-dark">

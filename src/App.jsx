@@ -1,10 +1,11 @@
 import { useTheme } from './hooks/useTheme';
-import Navbar    from './components/Navbar';
-import Hero      from './components/Hero';
-import Portfolio from './components/Portfolio';
-import Packages  from './components/Packages';
-import Booking   from './components/Booking';
-import Footer    from './components/Footer';
+import Navbar         from './components/Navbar';
+import Hero           from './components/Hero';
+import Portfolio      from './components/Portfolio';
+import Packages       from './components/Packages';
+import Booking        from './components/Booking';
+import Footer         from './components/Footer';
+import PortfolioAdmin from './components/PortfolioAdmin';
 import './index.css';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
         <Booking />
       </main>
       <Footer />
+      <PortfolioAdmin />
     </div>
   );
 }

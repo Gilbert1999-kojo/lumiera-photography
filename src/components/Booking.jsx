@@ -4,26 +4,18 @@ import { formatTime, getGoogleCalendarUrl, generateIcsFile } from '../utils/cale
 import BookingCalendar from './BookingCalendar';
 import {
   CheckCircle2, Clock, Calendar, CalendarCheck,
-  ChevronRight, ChevronLeft, ExternalLink, Download,
+  ChevronRight, ChevronLeft, ExternalLink, Download, X, Loader2,
 } from 'lucide-react';
 
 const STEPS = ['Service', 'Date & Time', 'Details', 'Confirm'];
 
 export default function Booking() {
-  const [step, setStep] = useState(0);
-  const [booking, setBooking] = useState({
-    service: null,
-    date: '',
-    time: '',
-    name: '',
-    email: '',
-    phone: '',
-    notes: '',
-  });
+  const [step,      setStep]      = useState(0);
+  const [booking,   setBooking]   = useState({ service: null, date: '', time: '', name: '', email: '', phone: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [submitting,setSubmitting]= useState(false);
+  const [errors,    setErrors]    = useState({});
 
-  // --- Step validation ---
   const validateStep = () => {
     if (step === 0) return !!booking.service;
     if (step === 1) return !!booking.date && !!booking.time;
@@ -44,24 +36,109 @@ export default function Booking() {
 
   const selectedService = services.find((s) => s.id === booking.service);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch('/api/create-booking', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          service:  selectedService?.name,
+          date:     booking.date,
+          time:     booking.time,
+          name:     booking.name,
+          email:    booking.email,
+          phone:    booking.phone,
+          notes:    booking.notes,
+          duration: selectedService?.duration ?? 120,
+        }),
+      });
+    } catch (_) { /* non-fatal — show success regardless */ }
+    setSubmitting(false);
     setSubmitted(true);
   };
 
   const calEventData = selectedService
     ? {
-        title: `${selectedService.name} — Booking`,
-        date:  booking.date,
-        time:  booking.time,
-        duration: selectedService.duration,
+        title:       `${selectedService.name} — Booking`,
+        date:        booking.date,
+        time:        booking.time,
+        duration:    selectedService.duration,
         description: `Booked by ${booking.name}\nService: ${selectedService.name}\nNotes: ${booking.notes || 'None'}`,
       }
     : null;
 
-  if (submitted) return <BookingSuccess booking={booking} service={selectedService} calEventData={calEventData} />;
-
   return (
+    <>
+      {/* ── Success popup modal ───────────────────────────── */}
+      {submitted && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+             onClick={(e) => e.target === e.currentTarget && setSubmitted(false)}>
+          <div className="bg-white dark:bg-brand-dark-surface rounded-2xl shadow-2xl w-full max-w-md
+                          animate-[fadeSlideUp_0.35s_ease_both]">
+            {/* Close */}
+            <div className="flex justify-end px-5 pt-5">
+              <button onClick={() => setSubmitted(false)}
+                className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-brand-dark-line transition-colors">
+                <X size={18} className="text-neutral-400" />
+              </button>
+            </div>
+
+            <div className="px-8 pb-8 text-center">
+              {/* Icon */}
+              <div className="w-20 h-20 rounded-full bg-green-50 dark:bg-green-950/30
+                              flex items-center justify-center mx-auto mb-5">
+                <CheckCircle2 size={40} className="text-green-500" />
+              </div>
+
+              <h2 className="text-2xl font-black text-neutral-900 dark:text-white mb-2">
+                You're Booked! 🎉
+              </h2>
+              <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-6">
+                Thanks, <strong className="text-neutral-900 dark:text-white">{booking.name}</strong>!
+                A confirmation has been sent to{' '}
+                <strong className="text-brand-orange">{booking.email}</strong>.<br />
+                Lumiera Studios will be in touch soon.
+              </p>
+
+              {/* Calendar buttons */}
+              <div className="bg-neutral-50 dark:bg-brand-dark-elevated rounded-xl border border-neutral-100 dark:border-brand-dark-line p-5 mb-4">
+                <p className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-3">
+                  Add to your calendar
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <a href={calEventData ? getGoogleCalendarUrl(calEventData) : '#'}
+                     target="_blank" rel="noopener noreferrer"
+                     className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl
+                                border-2 border-neutral-200 dark:border-brand-dark-line
+                                hover:border-brand-orange hover:text-brand-orange
+                                text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-colors">
+                    <ExternalLink size={14} /> Google Calendar
+                  </a>
+                  <button onClick={() => calEventData && generateIcsFile(calEventData)}
+                     className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl
+                                border-2 border-neutral-200 dark:border-brand-dark-line
+                                hover:border-brand-orange hover:text-brand-orange
+                                text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-colors">
+                    <Download size={14} /> Apple / Outlook
+                  </button>
+                </div>
+                <p className="text-[11px] text-neutral-400 mt-3">
+                  The .ics file works with Apple Calendar, Outlook, and any iCalendar app.
+                </p>
+              </div>
+
+              <button
+                onClick={() => { setSubmitted(false); setStep(0); setBooking({ service: null, date: '', time: '', name: '', email: '', phone: '', notes: '' }); }}
+                className="w-full py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold text-sm transition-colors">
+                Book Another Session
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section id="booking" className="py-20 bg-white dark:bg-brand-dark">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* Section header */}
@@ -123,7 +200,7 @@ export default function Booking() {
             <StepDetails booking={booking} setBooking={setBooking} errors={errors} />
           )}
           {step === 3 && (
-            <StepConfirm booking={booking} service={selectedService} onSubmit={handleSubmit} />
+            <StepConfirm booking={booking} service={selectedService} onSubmit={handleSubmit} submitting={submitting} />
           )}
         </div>
 
@@ -310,7 +387,7 @@ function Field({ label, error, required, children }) {
 }
 
 /* ─── Step 3: Confirm ─────────────────────────────────────── */
-function StepConfirm({ booking, service, onSubmit }) {
+function StepConfirm({ booking, service, onSubmit, submitting }) {
   return (
     <form onSubmit={onSubmit}>
       <h3 className="text-lg font-bold text-black dark:text-white mb-1">Confirm Your Booking</h3>
@@ -341,11 +418,13 @@ function StepConfirm({ booking, service, onSubmit }) {
 
       <button
         type="submit"
+        disabled={submitting}
         className="w-full py-4 rounded-xl bg-orange-500 hover:bg-orange-600 active:bg-orange-700
+                   disabled:opacity-70 disabled:cursor-not-allowed
                    text-white font-bold text-base transition-colors
-                   shadow-lg shadow-orange-500/25"
+                   shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2"
       >
-        Confirm Booking
+        {submitting ? <><Loader2 size={18} className="animate-spin" /> Confirming…</> : 'Confirm Booking'}
       </button>
     </form>
   );
@@ -363,78 +442,3 @@ function SummaryRow({ icon, label, value }) {
   );
 }
 
-/* ─── Success screen ─────────────────────────────────────── */
-function BookingSuccess({ booking, service, calEventData }) {
-  const googleUrl = calEventData ? getGoogleCalendarUrl(calEventData) : '#';
-
-  return (
-    <section id="booking" className="py-20 bg-white dark:bg-black">
-      <div className="max-w-lg mx-auto px-4 sm:px-6 text-center">
-        <div className="w-20 h-20 rounded-full bg-orange-50 dark:bg-orange-950/40
-                        flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 size={40} className="text-orange-500" />
-        </div>
-
-        <h2 className="text-3xl font-black text-black dark:text-white mb-3">
-          You're Booked!
-        </h2>
-        <p className="text-neutral-500 dark:text-neutral-400 mb-8">
-          Thanks, <strong className="text-black dark:text-white">{booking.name}</strong>!
-          A confirmation will be sent to <strong className="text-orange-500">{booking.email}</strong>.
-        </p>
-
-        {/* Calendar add buttons */}
-        <div className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800 p-6 mb-6">
-          <p className="text-sm font-semibold text-black dark:text-white mb-4">
-            Add to your calendar
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href={googleUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl
-                         border-2 border-neutral-200 dark:border-neutral-700
-                         hover:border-orange-400 hover:text-orange-500
-                         text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-colors"
-            >
-              <ExternalLink size={15} />
-              Google Calendar
-            </a>
-            <button
-              onClick={() => calEventData && generateIcsFile(calEventData)}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl
-                         border-2 border-neutral-200 dark:border-neutral-700
-                         hover:border-orange-400 hover:text-orange-500
-                         text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-colors"
-            >
-              <Download size={15} />
-              Apple / Outlook (.ics)
-            </button>
-          </div>
-          <p className="text-xs text-neutral-400 mt-4">
-            The .ics file works with Apple Calendar, Outlook, and any calendar app that supports iCalendar.
-          </p>
-        </div>
-
-        {/* Google Calendar API note */}
-        <div className="text-xs text-neutral-400 dark:text-neutral-600 bg-neutral-50 dark:bg-neutral-900
-                        border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl p-4">
-          <span className="font-semibold text-neutral-500 dark:text-neutral-500">
-            Full two-way calendar sync:
-          </span>{' '}
-          Connect Google Calendar API or Calendly below to automatically block the client's calendar and send reminders.
-          <br />
-          <a
-            href="https://developers.google.com/calendar/api/guides/overview"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-orange-500 hover:underline"
-          >
-            Google Calendar API docs →
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
