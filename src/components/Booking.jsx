@@ -232,10 +232,9 @@ export default function Booking() {
         </div>
       </div>
     </section>
+    </>
   );
 }
-
-/* ─── Step 0: Choose Service ───────────────────────────────── */
 function StepService({ booking, setBooking }) {
   return (
     <div>
