@@ -1,13 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { portfolioItems, categories } from '../data/portfolioData';
-import { loadUploadedItems } from './PortfolioAdmin';
 import PortfolioModal from './PortfolioModal';
 import { ArrowUpRight } from 'lucide-react';
+
+const DB_NAME  = 'lumiera_portfolio';
+const DB_STORE = 'uploads';
+
+function loadFromDB() {
+  return new Promise((resolve) => {
+    try {
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = (e) => e.target.result.createObjectStore(DB_STORE, { keyPath: 'id' });
+      req.onsuccess = (e) => {
+        const tx  = e.target.result.transaction(DB_STORE, 'readonly');
+        const all = tx.objectStore(DB_STORE).getAll();
+        all.onsuccess = () => resolve(all.result ?? []);
+        all.onerror   = () => resolve([]);
+      };
+      req.onerror = () => resolve([]);
+    } catch { resolve([]); }
+  });
+}
 
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selected,       setSelected]       = useState(null);
-  const [uploads,        setUploads]        = useState(loadUploadedItems);
+  const [uploads,        setUploads]        = useState([]);
+
+  useEffect(() => { loadFromDB().then(setUploads); }, []);
 
   const allItems = [...uploads, ...portfolioItems];
 

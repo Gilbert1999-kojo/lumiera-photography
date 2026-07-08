@@ -1,20 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Plus, Upload, Lock, CheckCircle2, Trash2 } from 'lucide-react';
 
 const ADMIN_PASSWORD = 'lumiera2026'; // Change this to your own password
-const STORAGE_KEY    = 'lumiera_portfolio_uploads';
+const DB_NAME        = 'lumiera_portfolio';
+const DB_STORE       = 'uploads';
+const MAX_FILE_BYTES = 100 * 1024 * 1024; // 100 MB
 const CATEGORIES     = ['Wedding', 'Event', 'Brand', 'Portrait'];
 
-/* ── Helpers ─────────────────────────────────────────────── */
-export function loadUploadedItems() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
-  } catch { return []; }
+/* ── IndexedDB helpers ──────────────────────────────────── */
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = (e) => e.target.result.createObjectStore(DB_STORE, { keyPath: 'id' });
+    req.onsuccess = (e) => resolve(e.target.result);
+    req.onerror   = (e) => reject(e.target.error);
+  });
 }
 
-function saveItems(items) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+async function dbGetAll() {
+  const db    = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(DB_STORE, 'readonly');
+    const req = tx.objectStore(DB_STORE).getAll();
+    req.onsuccess = () => resolve(req.result ?? []);
+    req.onerror   = () => reject(req.error);
+  });
 }
+
+async function dbPut(item) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(DB_STORE, 'readwrite');
+    const req = tx.objectStore(DB_STORE).put(item);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function dbDelete(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(DB_STORE, 'readwrite');
+    const req = tx.objectStore(DB_STORE).delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+/* loadUploadedItems — called by Portfolio.jsx (async-safe sync fallback) */
+export function loadUploadedItems() { return []; } // items loaded async in Portfolio
 
 /* ── Main component ─────────────────────────────────────── */
 export default function PortfolioAdmin({ onItemsChange }) {
@@ -25,7 +59,10 @@ export default function PortfolioAdmin({ onItemsChange }) {
   const [preview,  setPreview]  = useState(null);
   const [saving,   setSaving]   = useState(false);
   const [saved,    setSaved]    = useState(false);
-  const [items,    setItems]    = useState(loadUploadedItems);
+  const [items, setItems] = useState([]);
+
+  /* Load from IndexedDB on mount */
+  useEffect(() => { dbGetAll().then(setItems).catch(() => {}); }, []);
 
   /* Auth */
   const handleAuth = (e) => {
@@ -38,31 +75,31 @@ export default function PortfolioAdmin({ onItemsChange }) {
   const handleFile = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 4 * 1024 * 1024) { alert('Image must be under 4 MB'); return; }
+    if (file.size > MAX_FILE_BYTES) { alert('Image must be under 100 MB'); return; }
     const reader = new FileReader();
     reader.onload = () => { setPreview(reader.result); setForm((f) => ({ ...f, image: reader.result })); };
     reader.readAsDataURL(file);
   };
 
   /* Save portfolio item */
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (!form.title || !form.image) return;
     setSaving(true);
     const newItem = { id: `upload_${Date.now()}`, ...form, featured: false };
+    await dbPut(newItem).catch(() => {});
     const updated = [newItem, ...items];
     setItems(updated);
-    saveItems(updated);
     onItemsChange?.(updated);
     setSaving(false); setSaved(true);
     setTimeout(() => { setSaved(false); setForm({ title: '', category: 'Wedding', image: '', description: '', year: new Date().getFullYear().toString() }); setPreview(null); }, 1500);
   };
 
   /* Delete item */
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
+    await dbDelete(id).catch(() => {});
     const updated = items.filter((i) => i.id !== id);
     setItems(updated);
-    saveItems(updated);
     onItemsChange?.(updated);
   };
 
@@ -156,7 +193,7 @@ export default function PortfolioAdmin({ onItemsChange }) {
                     ) : (
                       <div className="flex flex-col items-center gap-2 text-neutral-400">
                         <Upload size={24} />
-                        <span className="text-xs">Click to upload (max 4 MB)</span>
+                        <span className="text-xs">Click to upload (max 100 MB)</span>
                       </div>
                     )}
                     <input type="file" accept="image/*" className="hidden" onChange={handleFile} />
