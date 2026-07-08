@@ -28,6 +28,7 @@ export function getGoogleCalendarUrl({ title, date, time, duration, description 
     text:    title,
     dates:   `${fmt(start)}/${fmt(end)}`,
     details: description,
+    add:     'Lumierastudios@gmail.com',
   });
 
   return `https://calendar.google.com/calendar/r/eventedit?${params.toString()}`;
@@ -53,15 +54,17 @@ export function generateIcsFile({ title, date, time, duration, description, loca
     'VERSION:2.0',
     'CALSCALE:GREGORIAN',
     'PRODID:-//Studio Portfolio//Booking//EN',
-    'METHOD:PUBLISH',
+    'METHOD:REQUEST',
     'BEGIN:VEVENT',
-    `UID:${Date.now()}-${Math.random().toString(36).slice(2)}@studio`,
+    `UID:${Date.now()}-${Math.random().toString(36).slice(2)}@lumierastudios`,
     `DTSTAMP:${fmtICS(new Date())}`,
     `DTSTART:${fmtICS(start)}`,
     `DTEND:${fmtICS(end)}`,
     `SUMMARY:${title}`,
     `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
     `LOCATION:${location}`,
+    'ORGANIZER;CN=Lumiera Studios:mailto:Lumierastudios@gmail.com',
+    'ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=Lumiera Studios:mailto:Lumierastudios@gmail.com',
     'STATUS:CONFIRMED',
     'END:VEVENT',
     'END:VCALENDAR',
