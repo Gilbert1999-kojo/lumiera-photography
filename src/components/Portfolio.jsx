@@ -3,23 +3,12 @@ import { portfolioItems, categories } from '../data/portfolioData';
 import PortfolioModal from './PortfolioModal';
 import { ArrowUpRight } from 'lucide-react';
 
-const DB_NAME  = 'lumiera_portfolio';
-const DB_STORE = 'uploads';
-
-function loadFromDB() {
-  return new Promise((resolve) => {
-    try {
-      const req = indexedDB.open(DB_NAME, 1);
-      req.onupgradeneeded = (e) => e.target.result.createObjectStore(DB_STORE, { keyPath: 'id' });
-      req.onsuccess = (e) => {
-        const tx  = e.target.result.transaction(DB_STORE, 'readonly');
-        const all = tx.objectStore(DB_STORE).getAll();
-        all.onsuccess = () => resolve(all.result ?? []);
-        all.onerror   = () => resolve([]);
-      };
-      req.onerror = () => resolve([]);
-    } catch { resolve([]); }
-  });
+async function fetchUploads() {
+  try {
+    const res = await fetch('/api/r2-items');
+    if (res.ok) return res.json();
+  } catch { /* fall through */ }
+  return [];
 }
 
 export default function Portfolio() {
@@ -27,7 +16,7 @@ export default function Portfolio() {
   const [selected,       setSelected]       = useState(null);
   const [uploads,        setUploads]        = useState([]);
 
-  useEffect(() => { loadFromDB().then(setUploads); }, []);
+  useEffect(() => { fetchUploads().then(setUploads); }, []);
 
   const allItems = [...uploads, ...portfolioItems];
 
